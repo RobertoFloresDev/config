@@ -62,3 +62,6 @@ export NVM_DIR="$HOME/.nvm"
 
 echo "Install - Node.js"
 nvm install 22
+
+echo "Install - ackonfig-dev"
+curl -sSL https://raw.githubusercontent.com/RobertoFloresDev/config/refs/heads/main/cli/ackonfig-dev/install.sh | bash
