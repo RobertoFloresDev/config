@@ -53,8 +53,8 @@ set_git_local_configuration() {
 
 # Function to set primary prompt with Git branch
 set_bashrc_config() {
-  if ! grep -Fxq "source $(dirname "$(realpath "$0")")/install/.bashrc" ~/.bashrc; then
-    echo "source $(dirname "$(realpath "$0")")/install/.bashrc" >> ~/.bashrc
+  if ! grep -Fxq "source $(dirname "$(realpath "$0")")/bash/.bashrc" ~/.bashrc; then
+    echo "source $(dirname "$(realpath "$0")")/bash/.bashrc" >> ~/.bashrc
     echo_blue "bashrc configuration has been set successfully."
     echo_purple "Please restart your terminal or run 'source ~/.bashrc' to apply the changes.\n"
   else
