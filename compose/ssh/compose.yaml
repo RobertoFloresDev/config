@@ -1,0 +1,22 @@
+services:
+  ssh:
+    container_name: ssh
+    image: ackts/ssh
+    restart: unless-stopped
+    network_mode: host
+    # networks:
+    #   - mynetwork
+    user: 1000:1000
+    environment:
+      - SSH_PORT=2222
+      - SSH_TOTP=${SSH_TOTP}
+      - FIXUID=Y
+      - TZ=America/Mexico_City
+      - CUSTOM_RUN=${CUSTOM_RUN}
+    volumes:
+      - ./projects:/home/ack/projects
+      - ./.ssh:/home/ack/.ssh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+# networks:
+#   mynetwork:
+#     external: true
