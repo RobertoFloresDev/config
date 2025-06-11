@@ -1,0 +1,20 @@
+# create the ./srv and ./filebrowser.db before running this
+# mkdir -p ./srv && touch ./filebrowser.db
+# user/password: admin/admin
+services:
+  filebrowser:
+    container_name: filebrowser
+    image: filebrowser/filebrowser
+    restart: unless-stopped
+    user: 1000:1000
+    # networks:
+    #   - mynetwork
+    volumes:
+      - ./srv:/srv
+      - ./filebrowser.db:/database.db
+      # - ./.filebrowser.json:/.filebrowser.json
+    ports:
+      - 8080:80
+# networks:
+#   mynetwork:
+#     external: true
