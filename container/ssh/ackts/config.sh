@@ -4,7 +4,7 @@ echo "Update"
 sudo apt-get update
 
 echo "Install - dependencies"
-sudo apt-get install bash-completion curl nano -y
+sudo apt-get install bash-completion curl git nano -y
 
 echo "Install - make"
 sudo apt-get install make -y
