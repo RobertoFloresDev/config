@@ -31,16 +31,16 @@ sudo apt-get update
 sudo apt-get install docker-ce-cli docker-buildx-plugin docker-compose-plugin -y
 
 echo "Install - Go"
-curl https://go.dev/dl/go1.24.4.linux-$(dpkg --print-architecture).tar.gz -o go.tar.gz -L
+curl https://go.dev/dl/go1.25.1.linux-$(dpkg --print-architecture).tar.gz -o go.tar.gz -L
 sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go.tar.gz
 rm go.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin:~/go/bin' >> ~/.profile
 
 echo "Install - upx"
 sudo apt install xz-utils -y
-curl https://github.com/upx/upx/releases/download/v5.0.0/upx-5.0.0-$(dpkg --print-architecture)_linux.tar.xz -o upx-linux.tar.xz -L
+curl https://github.com/upx/upx/releases/download/v5.0.2/upx-5.0.2-$(dpkg --print-architecture)_linux.tar.xz -o upx-linux.tar.xz -L
 tar -xf upx-linux.tar.xz
-sudo mv upx-5.0.0-$(dpkg --print-architecture)_linux/upx /usr/bin/
+sudo mv upx-5.0.2-$(dpkg --print-architecture)_linux/upx /usr/bin/
 rm -rf upx-*
 
 echo "Install - dive"
@@ -61,7 +61,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 echo "Install - Node.js"
-nvm install 22
+nvm install 24
 
 echo "Install - ackonfig-dev"
 curl -sSL https://raw.githubusercontent.com/RobertoFloresDev/config/refs/heads/main/cli/ackonfig-dev/install.sh | bash
