@@ -1,44 +1,28 @@
 # Config MacOS
 
-## Turn on sharing
+## Auto Start Mac when connected
+- Set (Energy > Start up when power is connected)
 
-- Settings > General > Sharing > Screen Sharing
-- Settings > General > Sharing > Remote Login
+## Remote access VNC and SSH
+- Set VNC (General > Sharing > Screen Sharing)
+- Set SSH (General > Sharing > Remote Login)
 
-## Turn on Automatic login
+## Install applications
+- Rustdesk
+- Chrome
+- Brave
+- VsCode
+- Codex
+- Claude
 
-- Settings > Users & Groups > Automatically log in as (user)
+## Possible Installations
+- Ollama
 
-## Turn on Automatic Start on power failure
+## Config Rustdesk
+- Configured with default password and access to IP
+- Set rustdesk (Privacy & Security > Accessibility)
+- Set rustdesk (Privacy & Security > Screen & System audio Recording)
 
-- Settings > Energy > Start up automatically after power failure
+### Manage itemes that will open automatically when log in
 
-## Install [Ollama](https://ollama.com/download)
-
-### After install
-
-- Settings > General > Login Items & Extensions > Ollama in open at login
-
-### External access Ollama
-```bash
-launchctl setenv OLLAMA_HOST "0.0.0.0"
-launchctl setenv OLLAMA_ORIGINS "*"
-```
-
-## Install Tailscale
-
-### After install verify
-
-- Settings > General > Allow in the background (Tailscale on, if not click on Network Extensions and turn on first)
-
-
-## Test Ollama externally
-
-```bash
-curl http://sub.example.com:11434/api/generate -d '{
-  "model": "llama3.2",
-  "prompt": "why the sky is blue?",
-  "format": "json",
-  "stream": false
-}'
-```
+- Set an Item (General > Login Items & Extensions)
