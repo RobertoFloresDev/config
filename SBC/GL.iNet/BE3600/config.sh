@@ -3,7 +3,7 @@
 # Verify Upgrade
 - Set (SYSTEM > Upgrade)
 
-# Set Password
+# Set Admin Password
 - Set (SYSTEM > Admin Password)
 
 # Set Network
@@ -31,3 +31,14 @@
   - VPN Dashboard
   - 2.4 GHz Wi-Fi
   - 5 GHz Wi-Fi
+
+# Remove Repeater configuration
+- Router UI Main Page > Repeater tile > Connect
+- Delete Saved connection
+# root password is same as admin
+ssh root@10.0.0.1
+cat /etc/config/wireless
+# verify that there is a > config wifi-iface 'sta'
+uci delete wireless.sta
+uci commit wireless
+wifi reload
