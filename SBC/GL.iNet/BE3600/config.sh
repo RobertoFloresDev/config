@@ -12,7 +12,7 @@
 - Set (NETWORK > Guest Network)
 - Gateway as 10.0.1.1
 
-# Wreless
+# Wireless
 - Set (WIRELESS)
 - NO MLO Wi-Fi
 - Enable 5/2.5 Ghz Regular/Guest Wi-Fi
@@ -31,6 +31,10 @@
   - VPN Dashboard
   - 2.4 GHz Wi-Fi
   - 5 GHz Wi-Fi
+
+# Set Tailscale
+- Set (APPLICATIONS > Tailscale)
+- Enable and Bind an Account
 
 # Remove Repeater configuration
 - Router UI Main Page > Repeater tile > Connect
