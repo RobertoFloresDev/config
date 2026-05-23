@@ -1,30 +1,76 @@
 # Config BE3600
 
-# Verify Upgrade
-- Set (SYSTEM > Upgrade)
+## Overview
+Configuration for GL.iNet GL-BE3600 Travel Router.
 
-# Set Admin Password
-- Set (SYSTEM > Admin Password)
+## System Configuration
 
-# Set Network
-- Set (NETWORK > LAN)
-- Router IP Address as 10.0.0.1
-- Set (NETWORK > Guest Network)
-- Gateway as 10.0.1.1
+### Verify Upgrade
 
-# Wireless
-- Set (WIRELESS)
-- NO MLO Wi-Fi
-- Enable 5/2.5 Ghz Regular/Guest Wi-Fi
-- Same SSID for 5/2.5 Ghz Regular (Visibility Hidden)
-- Same SSID for 5/2.5 Ghz Guest
+**Path:**  
+`SYSTEM > Upgrade`
 
-# Set Display
-- Set (SYSTEM > Display Management)
-- Lock Screen as Wallpaper Only
-- Auto Lock 1 Minute
-- Enalbe Screen Passcode
-- Function Management
+Start:
+- Firmware Online Upgrade
+
+### Set Admin Password
+
+**Path:**  
+`SYSTEM > Admin Password`
+
+Set:
+- Admin Password
+
+## DHCP Configuration
+
+### LAN Address
+
+**Path:**  
+`NETWORK > LAN`
+
+Set:
+- Router IP Address: `10.0.0.1`
+
+### Guest Address
+
+**Path:**  
+`NETWORK > Guest Network`
+
+Set:
+- Gateway: `10.0.1.1`
+
+Enable:
+- AP Isolation
+  > Isolate users from main network 
+
+## Wireless
+
+### 5 and 2.4 GHz Regular/Guest Wi-Fi
+
+**Path:**  
+`WIRELESS`
+
+Disable:
+- MLO Wi-Fi
+
+Enable:
+- 5/2.4 Ghz Regular/Guest Wi-Fi
+
+Set:
+- Same SSID for 5/2.4 Ghz Regular (Visibility Hidden)
+- Same SSID for 5/2.4 Ghz Guest
+
+## Display Settings
+
+### Display Management
+
+**Path:**  
+`SYSTEM > Display Management`
+
+Set:
+- Lock Screen: `Wallpaper Only`
+- Auto Lock: `1 Minute`
+- Function Management:
   - Overview
   - 2.4 Hz Guest Wi-Fi
   - 5 Hz Guest Wi-Fi
@@ -32,17 +78,44 @@
   - 2.4 GHz Wi-Fi
   - 5 GHz Wi-Fi
 
-# Set Tailscale
-- Set (APPLICATIONS > Tailscale)
-- Enable and Bind an Account
+Enable:
+- Screen Passcode
+  > Set Passcode
 
-# Remove Repeater configuration
-- Router UI Main Page > Repeater tile > Connect
-- Delete Saved connection
-# root password is same as admin
+## Tailscale
+
+### Set Tailscale
+
+**Path:**  
+`APPLICATIONS > Tailscale`
+
+Enable:
+- Enable
+
+Set:
+- Bind Account
+
+---
+
+## Remove Repeater configuration
+
+### UI Known Networks
+
+**Path:**  
+`INTERNET`
+> Repeater tile > Connect
+
+Delete:
+- Known Networks
+
+### Remove Service configuration
+
+```bash
+# - Root password is same as admin
 ssh root@10.0.0.1
 cat /etc/config/wireless
-# verify that there is a > config wifi-iface 'sta'
+# - Verify that there is a config wifi-iface 'sta'
 uci delete wireless.sta
 uci commit wireless
 wifi reload
+```

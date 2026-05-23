@@ -1,14 +1,27 @@
 # Config RM10
 
+## Overview
+Configuration for GL.iNet GL-RM10 KVM.
 
-# Set Color Mode
-- Set (Settings > System > Color Mode) to Dark
+## System Configuration
 
-# Set Timezone
-- Set (Settings > System > Timezone) to America/Mexico_City
+### Set Color Mode, Timezone and Device Identity
 
-# Set Device Identity
-- Set (Settings > System > Device Identity) to 1080P ASUS + Logitech Inc Keyboard
+**Path:**  
+`Settings > System`
 
-# Set Tailscale
-- Set (App Center) Tailscale ON and Bind Device
+Set:
+- Color Mode: `Dark`
+- Timezone: `America/Mexico_City`
+- Device Identity: `1080P ASUS + Logitech Inc Keyboard`
+
+### Set Tailscale
+
+**Path:**  
+`App Center`
+
+Enable:
+- Tailscale
+
+Set:
+- Bind Device
