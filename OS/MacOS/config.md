@@ -1,28 +1,73 @@
-# Config MacOS
+# macOS Environment Configuration
 
-## Auto Start Mac when connected
-- Set (Energy > Start up when power is connected)
+## Overview
+Base configuration steps required to prepare a macOS environment for remote administration and development usage.
 
-## Remote access VNC and SSH
-- Set VNC (General > Sharing > Screen Sharing)
-- Set SSH (General > Sharing > Remote Login)
-
+---
 ## Install applications
-- Rustdesk
-- Chrome
-- Brave
-- VsCode
-- Codex
-- Claude
+- [Rustdesk](https://github.com/rustdesk/rustdesk/releases/)
+- [Chrome](https://www.google.com/intl/en_us/chrome/dr/download/)
+- [Brave](https://brave.com/download/)
+- [VsCode](https://code.visualstudio.com/download)
+- [Codex](https://developers.openai.com/codex/app)
+- [Claude](https://claude.com/download)
 
-## Possible Installations
+## Optional applications
 - Ollama
 
-## Config Rustdesk
-- Configured with default password and access to IP
-- Set rustdesk (Privacy & Security > Accessibility)
-- Set rustdesk (Privacy & Security > Screen & System audio Recording)
+## System Configuration
 
-### Manage itemes that will open automatically when log in
+### Start up when power is connected
 
-- Set an Item (General > Login Items & Extensions)
+**Path:**  
+`System Settings > Energy`
+
+Set:
+- Start up when power is connected: `Always`
+
+## Open at Login
+
+**Path:**  
+`System Settings > General > Login Items & Extensions`
+
+Set:
+- Set Items are required
+
+### Remote access
+
+**Path:**  
+`System Settings > General > Sharing`
+
+Enable:
+- Remote Login
+  > Access info icon for configs
+- Screen Sharing
+  > Access info icon for configs
+
+## Rustdesk Configuration
+
+### System Configuration
+
+**Path:**  
+`System Settings > Privacy & Security > Accessibility`
+
+Enable:
+- RustDesk
+
+### Remote access
+
+**Path:**  
+`System Settings > Privacy & Security > Screen & System audio Recording`
+
+Enable:
+- RustDesk
+
+### RustDesk Settings
+
+**Path:**  
+`Settings > Security`
+
+Enable:
+- Enable direct IP access
+- Use permanent password
+  > Set permannent password
