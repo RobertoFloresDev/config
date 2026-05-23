@@ -83,6 +83,9 @@ curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key
 sudo tailscale set --auto-update
 # Set subnet (eg 19.0.0.X and 10.0.0.X)
 sudo tailscale set --advertise-routes=19.0.0.0/24,10.0.0.0/24
+# Set Accept routes (in case you want to accept routes from other devices)
+sudo tailscale set --accept-routes
 # See tailscale preferences
 sudo tailscale debug prefs
 # Tailscale Page (set IPv4, Disable Key Expiry, Edit route settings to set Exit Node and Subnet Routes)
+rm .bash_history
