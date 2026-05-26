@@ -25,6 +25,16 @@ Base configuration steps required to prepare a macOS environment for remote admi
 Set:
 - Start up when power is connected: `Always`
 
+## Local Access
+
+**Path:**  
+`System Settings > Privacy & Security > Local Network`
+
+Enable:
+- Brave
+- Chrome
+- Codex
+
 ## Open at Login
 
 **Path:**  
