@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# # SSH Key configuration
+# - Generate SSH key
+# ssh-keygen -t ed25519 -C "your_email@example.com"
+# ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+# - Copy .pub for <user>
+# ssh-copy-id -i ./id_ed25519.pub <user>@<ip>
+
 # # LOGIN AS <user>
 # ssh <user>@<ip>
 
@@ -35,15 +42,18 @@ systemctl is-enabled docker
 # - Post Installation Docker > https://docs.docker.com/engine/install/linux-postinstall/
 sudo usermod -aG docker $USER
 
-# # SSH Configs 
+# # SSH Configuration
 # - Disable root login
 sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
-# - TODO: remove password access / copy users root key > https://www.cyberciti.biz/faq/how-to-disable-ssh-password-login-on-linux/
+# - Disable password auth (TOTP with KbdInteractiveAuthentication also ask password so disable this)
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
 # - TOTP 2FA
 sudo apt-get install libpam-google-authenticator -y
 google-authenticator -Ctdf --rate-limit=3 --rate-time=30 --window-size=3
 echo 'auth required pam_google_authenticator.so' | sudo tee -a /etc/pam.d/sshd  > /dev/null
 sudo sed -i 's/KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/' /etc/ssh/sshd_config
+# - Ask for key and TOTP (both will be required), if not set you can use password with TOTP or key
+echo 'AuthenticationMethods publickey,keyboard-interactive' | sudo tee -a /etc/ssh/sshd_config  > /dev/null
 sudo systemctl restart ssh
 
 # # Allow user to reboot or poweroff without password
