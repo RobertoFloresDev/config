@@ -98,6 +98,14 @@ Signed-By: /etc/apt/keyrings/docker.asc
 EOF
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+# - If require rootless > https://docs.docker.com/engine/security/rootless/
+# sudo apt-get install docker-ce-rootless-extras -y
+# dockerd-rootless-setuptool.sh install
+# docker info
+# - Edit mirrors (https://mirror.gcr.io)
+sudo nano /etc/docker/daemon.json
+# - Validate configuration
+sudo dockerd --validate --config-file /etc/docker/daemon.json
 # - Verify service is enabled
 systemctl is-enabled docker.service
 # - If not, enable the service
