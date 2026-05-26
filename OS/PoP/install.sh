@@ -46,6 +46,8 @@ sudo usermod -aG docker $USER
 # # Install tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
 # sudo tailscale up --shields-up --accept-routes
+# - See tailscale preferences
+sudo tailscale debug prefs
 
 # # Install applications
 # - VSCode > https://code.visualstudio.com/download
