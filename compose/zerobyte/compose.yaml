@@ -1,0 +1,31 @@
+# # Install zerobyte > https://zerobyte.app/docs/installation#simplified-installation-no-remote-mounts https://github.com/nicotsx/zerobyte/releases v0.37.2
+# - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
+# tee /opt/stacks/zerobyte/compose.yaml <<'EOF'
+services:
+  zerobyte:
+    image: ghcr.io/nicotsx/zerobyte:v0.37
+    container_name: zerobyte
+    restart: unless-stopped
+    ports:
+      - "4096:4096"
+    environment:
+      - TZ=America/Mexico_City
+      - BASE_URL=${BASE_URL}
+      - APP_SECRET=${APP_SECRET}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.zerobyte.rule=Host(`zerobyte.<server>.<user>.local.<domain>.com`)
+      - traefik.http.routers.zerobyte.entrypoints=websecure
+      # - traefik.http.routers.zerobyte.tls.certresolver=cloudflare # create subdomain cert
+      - traefik.http.routers.zerobyte.tls=true # use wildcard cert
+      - traefik.http.services.zerobyte.loadbalancer.server.port=4096
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/lib/zerobyte:/var/lib/zerobyte
+      - /opt/stacks-data/zerobyte/data:/mydata
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+# EOF

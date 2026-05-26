@@ -1,0 +1,92 @@
+# # Install traefik > https://doc.traefik.io/traefik/getting-started/docker/#using-docker-compose https://hub.docker.com/_/traefik/tags v3.7
+# - Required for htpasswd
+# sudo apt-get install apache2-utils -y
+# - Generate basicauth Admin credentials for dasshboard (admin/admin)
+# echo $(htpasswd -nb admin 'admin') | sed -e s/\\$/\\$\\$/g
+# - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
+# tee /opt/stacks/traefik/compose.yaml <<'EOF'
+services:
+  traefik:
+    image: traefik:v3.7
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN} # https://dash.cloudflare.com/profile/api-tokens
+    command:
+      - --log.level=INFO
+      - --accesslog=true
+
+      - --api.dashboard=true
+
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=proxy
+      
+      - --providers.file.directory=/dynamic
+      - --providers.file.watch=true
+
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certresolver=cloudflare
+      - --entrypoints.websecure.http.tls.domains[0].main=<server>.<user>.local.<domain>.com # local
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.<server>.<user>.local.<domain>.com # local
+      - --entrypoints.websecure.http.tls.domains[1].main=<server>.<user>.ts.<domain>.com # tailscale
+      - --entrypoints.websecure.http.tls.domains[1].sans=*.<server>.<user>.ts.<domain>.com # tailscale
+      - --entrypoints.websecure.http.tls.domains[2].main=<server>.<user>.ext.<domain>.com # external
+      - --entrypoints.websecure.http.tls.domains[2].sans=*.<server>.<user>.ext.<domain>.com # external
+
+      - --certificatesresolvers.cloudflare.acme.email=${LETSENCRYPT_EMAIL} # your.cloudflare.mail@domain.com
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+
+      # Uncomment only while testing to avoid Let's Encrypt rate limits.
+      # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+    labels:
+      - traefik.enable=true
+
+      # Create wildcard Certs
+      - traefik.http.routers.wildcard-certs.tls.certresolver=cloudflare
+      - traefik.http.routers.wildcard-certs.tls.domains[0].main=<server>.<user>.local.<domain>.com # local
+      - traefik.http.routers.wildcard-certs.tls.domains[0].sans=*.<server>.<user>.local.<domain>.com # local
+      - traefik.http.routers.wildcard-certs.tls.domains[1].main=<server>.<user>.ts.<domain>.com # tailscale
+      - traefik.http.routers.wildcard-certs.tls.domains[1].sans=*.<server>.<user>.ts.<domain>.com # tailscale
+      - traefik.http.routers.wildcard-certs.tls.domains[2].main=<server>.<user>.ext.<domain>.com # external
+      - traefik.http.routers.wildcard-certs.tls.domains[2].sans=*.<server>.<user>.ext.<domain>.com # external
+      # - traefik.http.routers.wildcard-certs.tls=true
+      - traefik.http.routers.wildcard-certs.entrypoints=websecure
+      - traefik.http.routers.wildcard-certs.service=noop@internal
+      - traefik.http.routers.wildcard-certs.rule=HostRegexp(`{host:.+}`)
+
+      # Following labels are just required for dashboard (api.dashboard=true)
+
+      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.<server>.<user>.local.<domain>.com`)
+      # - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.<server>.<user>.local.<domain>.com`) || Host(`traefik.<server>.<user>.ts.<domain>.com`)"
+      - traefik.http.routers.traefik-dashboard.entrypoints=websecure
+      - traefik.http.routers.traefik-dashboard.service=api@internal
+      # - traefik.http.routers.traefik-dashboard.tls.certresolver=cloudflare # create subdomain cert
+      - traefik.http.routers.traefik-dashboard.tls=true # use wildcard cert
+      
+      # - traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth,dashboard-allowlist
+      # - traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$REPLACE_WITH_HASH
+      # - traefik.http.middlewares.dashboard-allowlist.ipallowlist.sourcerange=19.0.0.0/24,10.0.0.0/8
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/stacks-data/traefik/letsencrypt:/letsencrypt
+      - /opt/stacks-data/traefik/dynamic:/dynamic:ro
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+# EOF

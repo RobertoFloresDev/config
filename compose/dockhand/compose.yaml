@@ -1,0 +1,29 @@
+# # Install dockhand > https://dockhand.pro/#quick-start https://hub.docker.com/r/fnsys/dockhand/tags?name=v v1.0.29
+# - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
+# tee /opt/stacks/dockhand/compose.yaml <<'EOF'
+services:
+  dockhand:
+    image: fnsys/dockhand:v1.0.29
+    container_name: dockhand
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dockhand.rule=Host(`dockhand.<server>.<user>.local.<domain>.com`)
+      - traefik.http.routers.dockhand.entrypoints=websecure
+      # - traefik.http.routers.dockhand.tls.certresolver=cloudflare # create subdomain cert
+      - traefik.http.routers.dockhand.tls=true # use wildcard cert
+      - traefik.http.services.dockhand.loadbalancer.server.port=3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/stacks:/opt/stacks
+      - /opt/stacks-data/dockhand/data:/app/data
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+# EOF
