@@ -1,0 +1,24 @@
+http:
+  routers:
+    s1:
+      rule: "Host(`s1.<server>.<user>.local.<domain>.com`)"
+      entryPoints:
+        - websecure
+      tls: {}
+      service: s1
+    s2:
+      rule: "Host(`s2.<server>.<user>.local.<domain>.com`)"
+      entryPoints:
+        - websecure
+      tls: {}
+      service: s2
+
+  services:
+    s1:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.1"
+    s2:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.1"
