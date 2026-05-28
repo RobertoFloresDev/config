@@ -52,7 +52,9 @@ sudo apt-get install libpam-google-authenticator -y
 google-authenticator -Ctdf --rate-limit=3 --rate-time=30 --window-size=3
 echo 'auth required pam_google_authenticator.so' | sudo tee -a /etc/pam.d/sshd  > /dev/null
 sudo sed -i 's/KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/' /etc/ssh/sshd_config
-# - Ask for key and TOTP (both will be required), if not set you can use password with TOTP or key
+# - Dont ask for password in KbdInteractiveAuthentication (TOTP)
+sudo sed -i 's/^[[:space:]]*@include[[:space:]]\+common-auth$/#&/' /etc/pam.d/sshd
+# - Ask for key and TOTP (both will be required), if not set you can use TOTP or key
 echo 'AuthenticationMethods publickey,keyboard-interactive' | sudo tee -a /etc/ssh/sshd_config  > /dev/null
 sudo systemctl restart ssh
 
