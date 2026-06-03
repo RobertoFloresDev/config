@@ -55,7 +55,7 @@ Disable:
 
 Add Shortcut:
 ```bash
-Command: handy --toggle-transcription
+Command: handy --toggle-transcription && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 Shortcut: Ctrl + Space
 ```
 
