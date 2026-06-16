@@ -146,8 +146,21 @@ curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key
 # - Update tailscale
 # sudo tailscale update
 sudo tailscale set --auto-update
-# - Set subnet (eg 19.0.0.X and 10.0.0.X)
-sudo tailscale set --advertise-routes=19.0.0.0/24,10.0.0.0/24
+# - Set subnet (eg 19.0.1.X and 10.0.1.X)
+sudo tailscale set --advertise-routes=19.0.1.0/24,10.0.1.0/24
+# - Add destination NAT: alias subnet to real subnet Calls to 19.0.1.0/24 redirected to 19.0.0.0/24
+sudo iptables -t nat -A PREROUTING \
+  -i tailscale0 \
+  -d 19.0.1.0/24 \
+  -j NETMAP --to 19.0.0.0/24
+# - Add source NAT so LAN replies return through the subnet router (Not always required, like when accesing a service in the same machine)
+# sudo iptables -t nat -A POSTROUTING \
+#   -o eth0 \
+#   -d 19.0.0.0/24 \
+#   -j MASQUERADE
+# - Verify iptables rules
+sudo iptables -t nat -L PREROUTING -n -v --line-numbers
+sudo iptables -t nat -L POSTROUTING -n -v --line-numbers
 # - Set Accept routes (in case you want to accept routes from other devices)
 sudo tailscale set --accept-routes
 # - See tailscale preferences
