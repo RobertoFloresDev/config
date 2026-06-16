@@ -1,0 +1,30 @@
+# # Install homepage > https://gethomepage.dev/installation/docker/
+# - Create folders
+# mkdir -p /opt/stacks/compose/homepage
+# mkdir -p /opt/stacks/track/homepage
+# - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
+# tee /opt/stacks/compose/homepage/compose.yaml <<'EOF'
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    ports:
+      - 5002:3000
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=homepage.<server>.<user>.local.<domain>.com,homepage.<server>.<user>.ts.<domain>.com,19.0.0.110:5002,19.0.1.110:5002
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.homepage.rule=Host(`homepage.<server>.<user>.local.<domain>.com`) || Host(`homepage.<server>.<user>.ts.<domain>.com`)"
+      - traefik.http.routers.homepage.entrypoints=websecure
+      # - traefik.http.routers.homepage.tls.certresolver=cloudflare # create subdomain cert
+      - traefik.http.routers.homepage.tls=true # use wildcard cert
+      - traefik.http.services.homepage.loadbalancer.server.port=3000
+    volumes:
+      - /opt/stacks/track/homepage/config:/app/config
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+# EOF

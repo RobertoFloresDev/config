@@ -1,0 +1,31 @@
+# # Install novnc > https://hub.docker.com/r/ackts/novnc
+# - Create folders
+# mkdir -p /opt/stacks/compose/novnc
+# - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
+# tee /opt/stacks/compose/novnc/compose.yaml <<'EOF'
+services:
+  novnc:
+    image: ackts/novnc
+    container_name: novnc
+    restart: unless-stopped
+    user: 1000:1000
+    ports:
+      - 6900:6900
+    environment:
+      - NOVNC_PORT=6900
+      - VNC_HOST=19.0.0.140
+      - VNC_PORT=5900
+      - TZ=America/Mexico_City
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.novnc.rule=Host(`novnc.<server>.<user>.local.<domain>.com`) || Host(`novnc.<server>.<user>.ts.<domain>.com`)"
+      - traefik.http.routers.novnc.entrypoints=websecure
+      # - traefik.http.routers.novnc.tls.certresolver=cloudflare # create subdomain cert
+      - traefik.http.routers.novnc.tls=true # use wildcard cert
+      - traefik.http.services.novnc.loadbalancer.server.port=6900
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+# EOF

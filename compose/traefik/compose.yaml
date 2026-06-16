@@ -3,8 +3,11 @@
 # sudo apt-get install apache2-utils -y
 # - Generate basicauth Admin credentials for dasshboard (admin/admin)
 # echo $(htpasswd -nb admin 'admin') | sed -e s/\\$/\\$\\$/g
+# - Create folders
+# mkdir -p /opt/stacks/compose/traefik
+# mkdir -p /opt/stacks/track/traefik
 # - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
-# tee /opt/stacks/traefik/compose.yaml <<'EOF'
+# tee /opt/stacks/compose/traefik/compose.yaml <<'EOF'
 services:
   traefik:
     image: traefik:v3.7
@@ -23,7 +26,7 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=proxy
-      
+
       - --providers.file.directory=/dynamic
       - --providers.file.watch=true
 
@@ -47,8 +50,8 @@ services:
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
 
-      # Uncomment only while testing to avoid Let's Encrypt rate limits.
-      # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      # Comment for PROD, this helps testing to avoid Let's Encrypt rate limits.
+      - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
     labels:
       - traefik.enable=true
 
@@ -73,7 +76,7 @@ services:
       - traefik.http.routers.traefik-dashboard.service=api@internal
       # - traefik.http.routers.traefik-dashboard.tls.certresolver=cloudflare # create subdomain cert
       - traefik.http.routers.traefik-dashboard.tls=true # use wildcard cert
-      
+
       # - traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth,dashboard-allowlist
       # - traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$REPLACE_WITH_HASH
       # - traefik.http.middlewares.dashboard-allowlist.ipallowlist.sourcerange=19.0.0.0/24,10.0.0.0/8
@@ -82,8 +85,8 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /opt/stacks-data/traefik/letsencrypt:/letsencrypt
-      - /opt/stacks-data/traefik/dynamic:/dynamic:ro
+      - /opt/stacks/track/traefik/letsencrypt:/letsencrypt
+      - /opt/stacks/track/traefik/dynamic:/dynamic:ro
     networks:
       - proxy
 networks:

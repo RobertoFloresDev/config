@@ -1,6 +1,9 @@
 # # Install dockhand > https://dockhand.pro/#quick-start https://hub.docker.com/r/fnsys/dockhand/tags?name=v v1.0.29
+# - Create folders
+# mkdir -p /opt/stacks/compose/dockhand
+# mkdir -p /opt/stacks/data/dockhand
 # - Set compose ('EOF' > keeps the text ${ENV_VAR} in file)
-# tee /opt/stacks/dockhand/compose.yaml <<'EOF'
+# tee /opt/stacks/compose/dockhand/compose.yaml <<'EOF'
 services:
   dockhand:
     image: fnsys/dockhand:v1.0.29
@@ -12,15 +15,15 @@ services:
       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dockhand.rule=Host(`dockhand.<server>.<user>.local.<domain>.com`)
+      - "traefik.http.routers.dockhand.rule=Host(`dockhand.<server>.<user>.local.<domain>.com`) || Host(`dockhand.<server>.<user>.ts.<domain>.com``)"
       - traefik.http.routers.dockhand.entrypoints=websecure
       # - traefik.http.routers.dockhand.tls.certresolver=cloudflare # create subdomain cert
       - traefik.http.routers.dockhand.tls=true # use wildcard cert
       - traefik.http.services.dockhand.loadbalancer.server.port=3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/stacks:/opt/stacks
-      - /opt/stacks-data/dockhand/data:/app/data
+      - /opt/stacks/compose:/opt/stacks/compose
+      - /opt/stacks/data/dockhand/data:/app/data
     networks:
       - proxy
 networks:
