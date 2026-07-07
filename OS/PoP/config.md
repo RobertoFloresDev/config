@@ -42,6 +42,15 @@ Disable:
 - Offer to save passwords and passkeys
 - Sign in automatically
 
+### Proton Pass Browser extension configuration
+
+**Path:**  
+`Proton Pass Extension Icon > Hamburguer Menu > Settings`
+
+Enable:
+- General > Autofill > Basic Auth autofill
+- General > Browser settings > Use Proton Pass as your browser's default password manager
+
 ---
 
 ## Handy STT Configuration
