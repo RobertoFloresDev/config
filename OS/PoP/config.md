@@ -53,6 +53,19 @@ Enable:
 
 ---
 
+## LTUI (Local TUI)
+
+### Configure Keyboard Shortcut
+
+**Path:**  
+`COSMIC Settings > Input Devices > Keyboard > Keyboard Shortcuts > Custom`
+
+Add Shortcut:
+```bash
+Command: cosmic-term -- bash -c '~/ltui/bin/ltui'
+Shortcut: Ctrl + Shift + Space
+```
+
 ## Handy STT Configuration
 
 > Note: Wayland currently has issues with global hotkeys.

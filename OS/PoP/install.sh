@@ -4,6 +4,9 @@
 sudo apt update
 sudo apt upgrade -y
 
+# # Install utils
+sudo apt install wl-clipboard -y
+
 # # Install brave > https://brave.com/linux/
 sudo apt install curl -y
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg

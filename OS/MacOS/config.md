@@ -25,6 +25,14 @@ Base configuration steps required to prepare a macOS environment for remote admi
 Set:
 - Start up when power is connected: `Always`
 
+### Terminal close after exit
+
+**Path:**  
+`Terminal > Settings > Profile > Shell`
+
+Set:
+ - When the shell exits: Close the window
+
 ## Local Access
 
 **Path:**  
@@ -43,7 +51,7 @@ Enable:
 Set:
 - Set Items are required
 
-### Remote access
+## Remote access
 
 **Path:**  
 `System Settings > General > Sharing`
