@@ -11,6 +11,7 @@ Base configuration steps required to prepare a macOS environment for remote admi
 - [VsCode](https://code.visualstudio.com/download)
 - [Codex](https://developers.openai.com/codex/app)
 - [Claude](https://claude.com/download)
+- [Orbstack](https://orbstack.dev/downloadr)
 
 ## Optional applications
 - Ollama
@@ -21,6 +22,9 @@ Base configuration steps required to prepare a macOS environment for remote admi
 
 **Path:**  
 `System Settings > Energy`
+
+Enable:
+- Prevent automatic sleeping when the display is off
 
 Set:
 - Start up when power is connected: `Always`
